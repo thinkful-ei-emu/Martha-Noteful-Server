@@ -1,6 +1,6 @@
-# Express Boilerplate!
+# Noteful API
 
-This is a boilerplate project used for starting new projects!
+This is the API for the noteful app.
 
 ## Set up
 

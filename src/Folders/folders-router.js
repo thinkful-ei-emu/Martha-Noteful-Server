@@ -6,7 +6,7 @@ const FoldersService = require('./folders-service');
 const foldersRouter = express.Router();
 const jsonParser = express.json();
 
-const serializeFolders = folder => ({
+const serializeFolder = folder => ({
   id: folder.id,
   title: xss(folder.title),
 });
@@ -16,7 +16,7 @@ foldersRouter
   .get((req, res, next) => {
     FoldersService.getAllFolders(req.app.get('db'))
       .then(folders => {
-        res.json(folders.map(serializeFolders));
+        res.json(folders);
       })
       .catch(next);
   })
@@ -26,7 +26,7 @@ foldersRouter
 
     if(title === null){
       return res.status(400).json({
-        error: {message: 'Missing a title'}
+        error: {message: 'Missing title'}
       });
     }
 
@@ -38,7 +38,7 @@ foldersRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${folder.id}`))
-          .json(serializeFolders(folder));
+          .json(folder);
       })
       .catch(next);
   });
@@ -53,7 +53,7 @@ foldersRouter
       .then(folder => {
         if(!folder){
           return res.status(404).json({
-            error: {message: 'Folder doesn not exist'}
+            error: {message: 'Folder does not exist'}
           });
         }
         res.folder = folder;
@@ -61,15 +61,34 @@ foldersRouter
       })
       .catch(next); 
   })
-  .get((req, res, next) =>{
-    res.json(serializeFolders(res.folder));
+  .get((req, res) =>{
+    return res.json(serializeFolder(res.folder));
   })
   .delete((res, req, next)=> {
     FoldersService.deleteFolder(
       req.app.get('db'),
       req.params.folder_id
     )
-      .then(numRowsAffected => {
+      .then(() => {
+        res.status(204).end();
+      })
+      .catch(next);
+  })
+  .patch(jsonParser, (req, res, next) => {
+    const { title } =req.body;
+    const newFolder = { title };
+    const numberOfValues = Object.values(newFolder).filter(Boolean).length;
+    if(numberOfValues === 0){
+      return res.status(400).json({
+        error: {message: 'Request body must contain a title'}
+      });
+    }
+    FoldersService.updateFolder(
+      req.app.get('db'), 
+      req.params.folder_id, 
+      newFolder
+    )
+      .then(()=> {
         res.status(204).end();
       })
       .catch(next);

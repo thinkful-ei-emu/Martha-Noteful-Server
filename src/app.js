@@ -5,9 +5,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 
 const { NODE_ENV } = require('./config');
-const foldersRouter = require('./Folders/folders-service');
-const notesRouter = require('./Notes/notes-service');
-
+const foldersRouter = require('./Folders/folders-router');
+const notesRouter = require('./Notes/notes-router');
 
 const app = express();
 
@@ -27,6 +26,7 @@ app.use(function errorHandler(error, req, res, next) { //eslint-disable-line no-
   if(NODE_ENV === 'production'){
     response = { error: {message: 'server error'} };
   } else {
+    // eslint-disable-next-line no-console
     console.error(error);
     response = { message: error.message, error };
   }

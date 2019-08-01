@@ -9,9 +9,7 @@ const FoldersService= {
       .insert(newFolder)
       .into('folders')
       .returning('*')
-      .then(rows=> {
-        return rows[0];
-      });
+      .then(rows => rows[0]);
   },
   getById(knex, id){
     return knex
@@ -22,12 +20,12 @@ const FoldersService= {
   },
   deleteFolder(knex, id){
     return knex('folders')
-      .where({id})
+      .where('id', id)
       .delete();
   },
   updateFolder(knex, id, nowFolderFields){
     return knex('folders')
-      .where({id})
+      .where('id', id)
       .update(nowFolderFields);
   }
 };
