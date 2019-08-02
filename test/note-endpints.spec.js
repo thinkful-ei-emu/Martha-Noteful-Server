@@ -51,7 +51,7 @@ describe('Noteful Endpoints', function() {
     })
   });
 
-  describe(`GET /api/notes/:id`, () => {
+  describe(`GET /api/notes/:note_id`, () => {
     context(`Given note does not exist`, () => {
       it(`responds with 404`, () => {
         return supertest(app)
@@ -136,14 +136,6 @@ describe('Noteful Endpoints', function() {
   });
 
   describe(`DELETE /api/notes/:note_id`, () => {
-    context(`Given no notes`, () => {
-      it(`responds with 404`, () => {
-        return supertest(app)
-          .delete(`/api/notes/5`)
-          .expect(404, { error: { message: `Note does not exist` } })
-      })
-    })
-
     context('Given there are notes in the database', () => {
       const testFolders = makeFoldersArray();
       const testNotes = makeNotesArray()
@@ -156,11 +148,11 @@ describe('Noteful Endpoints', function() {
             return db
               .into('notes')
               .insert(testNotes)
-          })
-      })
+          });
+      });
 
       it('responds with 204 and removes the notes', () => {
-        const idToRemove = 2
+        const idToRemove = 1
         const expectedNotes = testNotes.filter(note => note.id !== idToRemove)
         return supertest(app)
           .delete(`/api/notes/${idToRemove}`)
@@ -171,6 +163,13 @@ describe('Noteful Endpoints', function() {
               .expect(expectedNotes)
           )
       })
+    context(`Given no notes`, () => {
+      it(`responds with 404`, () => {
+        return supertest(app)
+          .delete(`/api/notes/5`)
+          .expect(404, { error: { message: `Note does not exist` } })
+      })
+    })
     })
   });
 

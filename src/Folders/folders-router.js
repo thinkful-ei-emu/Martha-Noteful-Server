@@ -67,10 +67,10 @@ foldersRouter
   .delete((res, req, next)=> {
     FoldersService.deleteFolder(
       req.app.get('db'),
-      req.params.folder_id
+      req.req.params.folder_id
     )
-      .then(() => {
-        res.status(204).end();
+      .then(()=> {
+        res.res.status(204).end();
       })
       .catch(next);
   })
