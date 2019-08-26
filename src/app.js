@@ -4,11 +4,6 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 
-const corsOptions = {
-  origin: 'https://noteful-client.maplantz89.now.sh',
-  optionsSuccessStatus: 200
-};
-
 const { NODE_ENV } = require('./config');
 const foldersRouter = require('./Folders/folders-router');
 const notesRouter = require('./Notes/notes-router');
@@ -21,7 +16,14 @@ const morganOptions = (NODE_ENV === 'production')
 
 app.use(morgan(morganOptions));
 app.use(helmet());
-app.use(cors(corsOptions));
+app.use(cors());
+app.use(function(req, res, next) { 
+  res.header("Access-Control-Allow-Origin", '*'); 
+  res.header("Access-Control-Allow-Credentials", true); 
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS'); 
+  res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json'); 
+  next(); 
+});
 
 app.use('/api/folders', foldersRouter);
 app.use('/api/notes', notesRouter);
