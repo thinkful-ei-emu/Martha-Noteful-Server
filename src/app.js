@@ -4,6 +4,11 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 
+const corsOptions = {
+  origin: 'https://polar-depths-46444.herokuapp.com',
+  optionsSuccessStatus: 200
+};
+
 const { NODE_ENV } = require('./config');
 const foldersRouter = require('./Folders/folders-router');
 const notesRouter = require('./Notes/notes-router');
@@ -16,12 +21,7 @@ const morganOptions = (NODE_ENV === 'production')
 
 app.use(morgan(morganOptions));
 app.use(helmet());
-app.use(cors());
-app.all('/', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-  next();
-});
+app.use(cors(corsOptions));
 
 app.use('/api/folders', foldersRouter);
 app.use('/api/notes', notesRouter);
