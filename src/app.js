@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 
 const corsOptions = {
-  origin: 'https://polar-depths-46444.herokuapp.com',
+  origin: 'https://noteful-client.maplantz89.now.sh',
   optionsSuccessStatus: 200
 };
 
