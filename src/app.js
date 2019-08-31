@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const morgan = require('morgan');
+//const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 
@@ -10,11 +10,11 @@ const notesRouter = require('./Notes/notes-router');
 
 const app = express();
 
-const morganOptions = (NODE_ENV === 'production')
-  ? 'common' 
-  : 'dev';
+// const morganOptions = (NODE_ENV === 'production')
+//   ? 'common' 
+//   : 'dev';
 
-app.use(morgan(morganOptions));
+// app.use(morgan(morganOptions));
 app.use(helmet());
 //app.use(cors());
 app.use(function(req, res, next) { 
