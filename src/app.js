@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-//const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 
@@ -10,17 +9,12 @@ const notesRouter = require('./Notes/notes-router');
 
 const app = express();
 
-// const morganOptions = (NODE_ENV === 'production')
-//   ? 'common' 
-//   : 'dev';
-
-// app.use(morgan(morganOptions));
 app.use(helmet());
-//app.use(cors());
+app.use(cors());
 app.use(function(req, res, next) { 
   res.header('Access-Control-Allow-Origin', '*'); 
   res.header('Access-Control-Allow-Credentials', true); 
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS'); 
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS'); 
   res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json'); 
   next(); 
 });
